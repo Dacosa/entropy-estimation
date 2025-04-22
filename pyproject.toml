@@ -1,0 +1,11 @@
+[project]
+name = "entropy-estimation"
+version = "0.1.0"
+description = "Entropy Estimation"
+dependencies = [
+    "pandas",
+    "numpy",
+    "pyarrow",
+    "requests",
+    "beautifulsoup4"
+]
