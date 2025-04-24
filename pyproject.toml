@@ -7,5 +7,6 @@ dependencies = [
     "numpy",
     "pyarrow",
     "requests",
-    "beautifulsoup4"
+    "beautifulsoup4",
+    "jupyter>=1.1.1",
 ]
