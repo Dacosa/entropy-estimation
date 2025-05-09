@@ -67,14 +67,22 @@ for name, input_file in sources.items():
         # --------- EVALUATE ---------
         print("Evaluating model on test set ...")
         loss, accuracy = model.evaluate(X_test, y_test, verbose=0)
-        p_ml = accuracy
-        h_ml = -np.log2(p_ml) if 0 < p_ml < 1 else float('nan')
+        print(f"Test set accuracy: {accuracy:.6f}")
+
+        # --------- MIN-ENTROPY ESTIMATION (max predicted probability) ---------
+        print("Computing min-entropy from predicted probabilities ...")
+        y_probs = model.predict(X_test, batch_size=batch_size, verbose=1)
+        max_probs = np.max(y_probs, axis=1)
+        avg_max_prob = np.mean(max_probs)
+        h_ml = -np.log2(avg_max_prob) if avg_max_prob > 0 else float('nan')
+        h_ml = min(h_ml, 8.0)  # Clamp to max 8 bits for 8-bit symbols
         result = (
             f"Source: {name}\n"
             f"Sequence length: {N}\n"
             f"History length: {history_length}\n"
             f"Alphabet size: {alphabet_size}\n"
-            f"Test accuracy (P_ML): {p_ml:.6f}\n"
+            f"Test accuracy (P_ML): {accuracy:.6f}\n"
+            f"Avg max predicted prob: {avg_max_prob:.6f}\n"
             f"Estimated min-entropy (h_ML): {h_ml:.6f} bits/symbol\n"
         )
         print(result)
