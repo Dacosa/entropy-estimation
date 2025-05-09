@@ -10,7 +10,7 @@ SCRIPT_DIR = os.path.dirname(__file__)
 REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
 OUTPUT_DIR = os.path.join(REPO_ROOT, "raw_data", "ethereum")  # Directory to save files
 MAX_CALLS_PER_SECOND = 4
-BLOCK_FETCH_COUNT = 100
+BLOCK_FETCH_COUNT = 10000
 AUTH_FILE = os.path.join(SCRIPT_DIR, "auth.txt")  # File containing API key
 
 # Read API key from auth.txt in the same folder as this script
@@ -37,22 +37,21 @@ def get_block_data(block_number: str) -> dict:
     return None
 
 
-def save_block_data(block_hash: str, block_number: str):
+def save_block_data(block_hash: str, block_number: str, timestamp: int):
     """
     Save block data in the specified directory format.
     """
     dir_path = OUTPUT_DIR
     os.makedirs(dir_path, exist_ok=True)
-    
-    # Prepare the block data
-    file_name = f"block_{block_number}.json"
+    # Format the timestamp to the minute
+    dt = datetime.utcfromtimestamp(timestamp)
+    file_name = dt.strftime("%Y%m%d_%H%M.json")
     file_path = os.path.join(dir_path, file_name)
-    
     block_data = {
         "block_hash": block_hash,
         "block_number": block_number,
+        "timestamp": timestamp
     }
-    
     # Write data to file
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(block_data, f, indent=4)
@@ -61,7 +60,7 @@ def save_block_data(block_hash: str, block_number: str):
 
 def collect_last_n_blocks():
     """
-    Collect the last 100 Ethereum blocks and save them.
+    Collect the last 10000 Ethereum blocks and save them.
     """
     # Get the latest block number
     latest_block_data = get_block_data("latest")
@@ -77,7 +76,9 @@ def collect_last_n_blocks():
         if block_data:
             block_hash = block_data["hash"]
             block_number = block_data["number"]
-            save_block_data(block_hash, block_number)
+            # Use timestamp (to the minute) as file name
+            timestamp = int(block_data["timestamp"], 16)
+            save_block_data(block_hash, block_number, timestamp)
         else:
             print(f"Failed to fetch data for block {block_number_hex}")
         

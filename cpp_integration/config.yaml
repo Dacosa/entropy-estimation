@@ -1,2 +1,2 @@
 # Path to the SP800-90B_EntropyAssessment C++ binaries
-cpp_binary_path: ../SP800-90B_EntropyAssessment/bin/
+cpp_binary_path: SP800-90B_EntropyAssessment/cpp/

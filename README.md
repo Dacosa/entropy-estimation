@@ -3,12 +3,14 @@
 This project processes data from four sources and integrates C++ code for advanced computation.
 
 ## Structure
-- `data_sources/`: Data from each source
+- `collectors/`: Collectors for each source
 - `cpp_integration/`: Python-C++ integration
-- `scripts/`: Processing scripts
 - `notebooks/`: Jupyter notebooks
-- `tests/`: Unit tests
+- `processed_data/`: Processed data from each source
+- `raw_data/`: Raw data from each source
+- `scripts/`: Processing scripts
 - `SP800-90B_EntropyAssessment/`: C++ entropy assessment code (as a submodule)
+- `tests/`: Unit tests
 
 ## Setup
 
@@ -47,10 +49,19 @@ Then initialize and update submodules (if needed):
 git submodule update --init --recursive
 ```
 
-### 4. Install C++ build dependencies (with brew)
-Use Homebrew to install the required C++ libraries and tools:
+### 4. Install C++ build dependencies
+Install the required C++ libraries and tools:
 ```
-brew install gcc mpfr bzip2 jsoncpp openssl libdivsufsort
+sudo apt-get update && sudo apt-get install -y \
+    build-essential \
+    g++ \
+    libbz2-dev \
+    libdivsufsort-dev \
+    libjsoncpp-dev \
+    libssl-dev \
+    libmpfr-dev \
+    libgmp-dev \
+    pkg-config
 ```
 
 ### 5. Build the C++ binaries
@@ -78,3 +89,9 @@ If your binaries are not in the default location, update `cpp_integration/config
 
 ### 8. Use from Python
 You can now use the Python wrapper to call the C++ binaries from your scripts.
+
+### 9. Run NIST tests
+To run the NIST tests, use the `scripts/nist_estimate.py` script.
+```
+uv run -m scripts.nist_estimate
+```

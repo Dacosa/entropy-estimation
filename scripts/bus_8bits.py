@@ -102,5 +102,5 @@ def process_folder_parallel(input_folder, output_file_path):
 
 if __name__ == "__main__":
     input_folder = os.path.join('raw_data', 'bus', '2024-11-27')
-    output_file = os.path.join('processed_data', 'bus', '8bits')
+    output_file = os.path.join('processed_data', 'bus', '8bits_2024-11-27')
     process_folder_parallel(input_folder, output_file)
