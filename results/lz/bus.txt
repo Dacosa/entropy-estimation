@@ -1,0 +1,5 @@
+Length: 62719
+Alphabet size: 256
+LZ76 Complexity Count: 26377
+Entropy Estimate (manual): 6.7022766974033745 bits/symbol
+Entropy Estimate (antropy normalized): 0.8377845871754219 bits/symbol

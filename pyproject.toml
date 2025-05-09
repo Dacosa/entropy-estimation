@@ -9,4 +9,5 @@ dependencies = [
     "requests",
     "beautifulsoup4",
     "jupyter>=1.1.1",
+    "antropy>=0.1.9",
 ]
