@@ -5,4 +5,3 @@ __pycache__/
 .ipynb_checkpoints/
 raw_data/
 collectors/*/auth.txt
-processed_data/

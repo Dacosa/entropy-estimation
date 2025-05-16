@@ -1,6 +1,0 @@
-Source: radio
-Sequence length: 83686
-History length: 10
-Alphabet size: 256
-Test accuracy (P_ML): 0.705485
-Estimated min-entropy (h_ML): 0.503312 bits/symbol

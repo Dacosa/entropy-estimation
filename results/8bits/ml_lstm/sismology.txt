@@ -1,0 +1,7 @@
+Source: sismology
+Sequence length: 2751765
+History length: 10
+Alphabet size: 256
+Test accuracy (P_ML): 0.922649
+Avg max predicted prob: 0.901910
+Estimated min-entropy (h_ML): 0.148945 bits/symbol

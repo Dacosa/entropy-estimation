@@ -1,0 +1,7 @@
+Source: bus
+Sequence length: 62719
+History length: 10
+Alphabet size: 256
+Test accuracy (P_ML): 0.007494
+Avg max predicted prob: 0.008183
+Estimated min-entropy (h_ML): 6.933084 bits/symbol

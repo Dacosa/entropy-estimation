@@ -1,0 +1,5 @@
+Length: 1829
+Alphabet size: 256
+Model: GRU
+Min-Entropy (bits/symbol): 7.981067
+Stride: 10

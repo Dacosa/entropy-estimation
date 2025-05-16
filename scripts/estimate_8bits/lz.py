@@ -14,9 +14,10 @@ sources = {
     'radio': 'processed_data/radio/8bits.bin',
     'sismology': 'processed_data/sismology/8bits.bin',
     'ethereum': 'processed_data/ethereum/8bits.bin',
+    'generated': 'processed_data/generated/8bits.bin',
 }
 
-RESULTS_DIR = os.path.join('results', 'lz')
+RESULTS_DIR = os.path.join('results', '8bits', 'lz')
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 for name, input_file in sources.items():

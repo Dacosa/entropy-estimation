@@ -8,7 +8,9 @@ This project processes data from four sources and integrates C++ code for advanc
 - `notebooks/`: Jupyter notebooks
 - `processed_data/`: Processed data from each source
 - `raw_data/`: Raw data from each source
-- `scripts/`: Processing scripts
+- `scripts/process/`: Data processing scripts
+- `scripts/estimate_8bits/`: Standard entropy estimators (use every sample)
+- `scripts/estimators_8bits_stride/`: Stride-based entropy estimators (use every n-th sample)
 - `SP800-90B_EntropyAssessment/`: C++ entropy assessment code (as a submodule)
 - `tests/`: Unit tests
 
@@ -90,8 +92,32 @@ If your binaries are not in the default location, update `cpp_integration/config
 ### 8. Use from Python
 You can now use the Python wrapper to call the C++ binaries from your scripts.
 
-### 9. Run NIST tests
-To run the NIST tests, use the `scripts/nist_estimate.py` script.
+## Entropy Estimator Scripts
+
+### Standard Estimators
+Located in `scripts/estimate_8bits/`, these scripts estimate entropy using every sample in the data. Includes:
+- `ml_lstm.py`: LSTM-based neural estimator
+- `ml_rnn.py`: GRU-based neural estimator
+- `lz.py`: LZ78-based estimator
+- `nist.py`: NIST min-entropy estimator
+
+### Stride-Based Estimators
+Located in `scripts/estimators_8bits_stride/`, these scripts estimate entropy using every n-th sample (stride) from the data. This allows you to analyze how entropy changes with increasing sample interval.
+
+Each script supports a `--stride` argument (default 2). The stride value is included in the output filenames for easy comparison.
+
+#### Example usage:
+```bash
+uv run -m scripts.estimators_8bits_stride.ml_lstm --stride 5
+uv run -m scripts.estimators_8bits_stride.lz --stride 10
 ```
-uv run -m scripts.nist_estimate
-```
+
+Output files will be named like `bus_stride5.txt`, `radio_stride10.txt`, etc.
+
+See `scripts/estimators_8bits_stride/README.md` for details.
+
+## Results
+
+- Standard estimator results are saved in `results/8bits/<estimator>/`.
+- Stride-based estimator results are saved in `results/8bits_stride/<estimator>/`.
+- Output filenames include the data source and stride, e.g., `bus_stride5.txt`.

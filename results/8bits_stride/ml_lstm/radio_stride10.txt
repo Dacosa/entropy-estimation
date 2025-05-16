@@ -1,0 +1,5 @@
+Length: 8369
+Alphabet size: 256
+Model: LSTM
+Min-Entropy (bits/symbol): 7.927206
+Stride: 10

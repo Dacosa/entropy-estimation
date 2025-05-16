@@ -1,0 +1,4 @@
+Length: 100000
+Alphabet size: 256
+Min-Entropy (bits/symbol): 7.851417
+Stride: 10

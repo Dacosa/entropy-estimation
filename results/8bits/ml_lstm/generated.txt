@@ -1,0 +1,7 @@
+Source: generated
+Sequence length: 1000000
+History length: 10
+Alphabet size: 256
+Test accuracy (P_ML): 0.003870
+Avg max predicted prob: 0.004269
+Estimated min-entropy (h_ML): 7.872051 bits/symbol

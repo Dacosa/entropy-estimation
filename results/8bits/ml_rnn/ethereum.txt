@@ -1,0 +1,7 @@
+Source: ethereum
+Sequence length: 18288
+History length: 10
+Alphabet size: 256
+Test accuracy (P_ML): 0.004922
+Avg max predicted prob: 0.004047
+Estimated min-entropy (h_ML): 7.948763 bits/symbol
