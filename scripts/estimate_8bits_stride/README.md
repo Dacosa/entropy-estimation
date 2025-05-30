@@ -9,16 +9,17 @@ This folder contains versions of the entropy estimators that use **every n-th sa
 - `nist.py`: NIST min-entropy estimator
 
 ## Usage
-Each script supports a `--stride` argument to control the sampling interval. The stride value is also included in the output filenames.
+Each script supports a `--stride` argument to control the sampling interval, **and a `--bits` argument to control word length (e.g., 8 or 16 bits per symbol)**. The stride and bits values are included in the output filenames.
 
 ### Example
 ```bash
-uv run -m scripts.estimators_8bits_stride.ml_lstm --stride 5
-uv run -m scripts.estimators_8bits_stride.lz --stride 10
+uv run -m scripts.estimate_8bits_stride.ml_lstm --stride 5 --bits 16
+uv run -m scripts.estimate_8bits_stride.lz --stride 10 --bits 16
 ```
 
 - Default stride is 2 (can also be set with the `ESTIMATOR_STRIDE` environment variable).
-- Output files will be named like `bus_stride5.txt`, `radio_stride10.txt`, etc.
+- Default bits per symbol is 8; set `--bits 16` for 16-bit symbols.
+- Output files will be named like `bus_stride5_bits16.txt`, `radio_stride10_bits16.txt`, etc.
 
 ## Output
 Results are written to the corresponding folder in `results/8bits_stride/<estimator>/`.

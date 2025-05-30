@@ -22,19 +22,38 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 
 # Parameters
 history_length = 10  # Number of previous symbols for prediction
-alphabet_size = 256  # 8 bits per symbol (byte)
-epochs = 10
-batch_size = 128  # Increased batch size for faster training
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--stride', type=int, default=int(os.environ.get('ESTIMATOR_STRIDE', 2)), help='Stride for sampling (default: 2)')
+parser.add_argument('--bits', type=int, default=8, help='Bits per symbol (default: 8)')
+parser.add_argument('--history', type=int, default=32, help='History length (context length, default: 32)')
+parser.add_argument('--epochs', type=int, default=10, help='Number of epochs (default: 10)')
+parser.add_argument('--batch_size', type=int, default=128, help='Batch size (default: 128)')
+parser.add_argument('--source', type=str, default='all', choices=list(sources.keys()) + ['all'], help='Data source to use (default: all)')
 args = parser.parse_args()
 stride = args.stride
+bits = args.bits
+history_length = args.history
+epochs = args.epochs
+batch_size = args.batch_size
+alphabet_size = 2 ** bits
+source = args.source
 
-def load_bin_file_as_int_sequence(filepath, stride=1):
+def load_bin_file_as_int_sequence(filepath, stride=1, bits=8):
     with open(filepath, 'rb') as f:
         byte_arr = np.frombuffer(f.read(), dtype=np.uint8)
-    return byte_arr[::stride]
+    if bits == 8:
+        return byte_arr[::stride]
+    # Pack bits into symbols (for bits > 8)
+    total_bits = len(byte_arr) * 8
+    n_symbols = total_bits // bits
+    if n_symbols == 0:
+        return np.array([], dtype=np.uint32)
+    all_bits = np.unpackbits(byte_arr)
+    all_bits = all_bits[:n_symbols * bits]
+    symbols = all_bits.reshape(-1, bits).dot(1 << np.arange(bits)[::-1])
+    symbols = symbols[::stride]
+    return symbols.astype(np.uint32)
 
 class SequenceBatchGenerator(Sequence):
     def __init__(self, seq, history_length, batch_size, num_classes, start=0, end=None, **kwargs):

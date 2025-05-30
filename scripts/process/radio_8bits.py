@@ -4,7 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import random
 import time
 
-SEED_HEX = 'ea84bc86d32da1a5780ca13b30e2516215d33e1449a9742aa17df2bd6e3b18a1de741a01b5496fa57feb5216caf9e02e414addd22fd763c3641a753d9bab231a'
+SEED_HEX = 'ad5423'
 SEED_INT = int(SEED_HEX, 16)
 
 # Generate 8 random positions in [1, 99840]

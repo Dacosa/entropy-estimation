@@ -58,33 +58,47 @@ def save_block_data(block_hash: str, block_number: str, timestamp: int):
     print(f"Block data saved: {file_path}")
 
 
-def collect_last_n_blocks():
+def collect_blocks_backwards(start_block=None, n_blocks=BLOCK_FETCH_COUNT):
     """
-    Collect the last 10000 Ethereum blocks and save them.
+    Collect n_blocks Ethereum blocks backwards from start_block (inclusive).
+    If start_block is None, start from the latest block.
+    start_block can be an int or hex string.
     """
-    # Get the latest block number
-    latest_block_data = get_block_data("latest")
-    if not latest_block_data:
-        print("Failed to fetch the latest block data.")
-        return
-    
-    latest_block_number = int(latest_block_data["number"], 16)
-    
-    for i in range(BLOCK_FETCH_COUNT):
-        block_number_hex = hex(latest_block_number - i)
+    if start_block is None:
+        latest_block_data = get_block_data("latest")
+        if not latest_block_data:
+            print("Failed to fetch the latest block data.")
+            return
+        start_block_number = int(latest_block_data["number"], 16)
+    else:
+        if isinstance(start_block, str):
+            if start_block.startswith("0x"):
+                start_block_number = int(start_block, 16)
+            else:
+                start_block_number = int(start_block)
+        else:
+            start_block_number = int(start_block)
+
+    for i in range(n_blocks):
+        block_number_hex = hex(start_block_number - i)
         block_data = get_block_data(block_number_hex)
         if block_data:
             block_hash = block_data["hash"]
             block_number = block_data["number"]
-            # Use timestamp (to the minute) as file name
             timestamp = int(block_data["timestamp"], 16)
             save_block_data(block_hash, block_number, timestamp)
         else:
             print(f"Failed to fetch data for block {block_number_hex}")
-        
-        # Respect the API rate limit
         if (i + 1) % MAX_CALLS_PER_SECOND == 0:
             time.sleep(1)
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--start-block', type=str, default=None, help='Block number (int or hex) to start collecting from (inclusive). If not given, starts from latest.')
+    parser.add_argument('--n-blocks', type=int, default=BLOCK_FETCH_COUNT, help='Number of blocks to collect (default: 10000)')
+    args = parser.parse_args()
+    collect_blocks_backwards(start_block=args.start_block, n_blocks=args.n_blocks)
 
 
 if __name__ == "__main__":

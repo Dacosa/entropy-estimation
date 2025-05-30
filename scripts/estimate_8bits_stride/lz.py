@@ -15,13 +15,28 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument('--stride', type=int, default=int(os.environ.get('ESTIMATOR_STRIDE', 2)), help='Stride for sampling (default: 2)')
+parser.add_argument('--bits', type=int, default=8, help='Bits per symbol (default: 8)')
+parser.add_argument('--source', type=str, default='all', choices=list(sources.keys()) + ['all'], help='Data source to use (default: all)')
 args = parser.parse_args()
 stride = args.stride
+bits = args.bits
+source = args.source
 
-def load_bin_file_as_int_sequence(filepath, stride=1):
+def load_bin_file_as_int_sequence(filepath, stride=1, bits=8):
     with open(filepath, 'rb') as f:
         byte_arr = np.frombuffer(f.read(), dtype=np.uint8)
-    return byte_arr[::stride]
+    if bits == 8:
+        return byte_arr[::stride]
+    # Pack bits into symbols (for bits > 8)
+    total_bits = len(byte_arr) * 8
+    n_symbols = total_bits // bits
+    if n_symbols == 0:
+        return np.array([], dtype=np.uint32)
+    all_bits = np.unpackbits(byte_arr)
+    all_bits = all_bits[:n_symbols * bits]
+    symbols = all_bits.reshape(-1, bits).dot(1 << np.arange(bits)[::-1])
+    symbols = symbols[::stride]
+    return symbols.astype(np.uint32)
 
 def lz_entropy_estimate(seq):
     # Simple LZ78 entropy estimator
@@ -41,7 +56,12 @@ def lz_entropy_estimate(seq):
         return float('nan')
     return phrases / n * np.log2(n) if n > 1 else float('nan')
 
-for name, input_file in sources.items():
+if source == 'all':
+    selected_sources = sources.items()
+else:
+    selected_sources = [(source, sources[source])]
+
+for name, input_file in selected_sources:
     print(f"\nProcessing source: {name}")
     try:
         seq = load_bin_file_as_int_sequence(input_file, stride=stride)
