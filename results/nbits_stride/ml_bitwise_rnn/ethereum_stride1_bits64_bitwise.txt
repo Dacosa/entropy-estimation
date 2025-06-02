@@ -1,5 +1,5 @@
 Length (bits): 146304
 Model: Bitwise-RNN
-Bitwise Cross-Entropy (bits/bit): 1.000001
+Bitwise Cross-Entropy (bits/bit): 0.999986
 Stride: 1
 Bits per symbol: 64
