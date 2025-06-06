@@ -1,7 +1,7 @@
 Source: radio
-Sequence length: 83686
+Sequence length: 879992
 History length: 10
 Alphabet size: 256
-Test accuracy (P_ML): 0.671666
-Avg max predicted prob: 0.307500
-Estimated min-entropy (h_ML): 1.701343 bits/symbol
+Test accuracy (P_ML): 0.006080
+Avg max predicted prob: 0.005273
+Estimated min-entropy (h_ML): 7.567081 bits/symbol

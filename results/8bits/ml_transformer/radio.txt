@@ -1,7 +1,7 @@
-Length: 83686
+Length: 879992
 Alphabet size: 256
 Model: Transformer
-Min-Entropy (bits/symbol): 2.966332
+Min-Entropy (bits/symbol): 7.572118
 History length: 32
-Test accuracy (P_ML): 0.089768
-Avg max predicted prob: 0.127951
+Test accuracy (P_ML): 0.007108
+Avg max predicted prob: 0.005255

@@ -33,11 +33,11 @@ def lz_entropy_estimate(seq):
     return len(dictionary) / (len(seq) / np.log2(len(seq)))
 
 sources = {
-    'bus': 'processed_data/bus/8bits.bin',
+    #'bus': 'processed_data/bus/8bits.bin',
     'radio': 'processed_data/radio/8bits.bin',
-    'sismology': 'processed_data/sismology/8bits.bin',
-    'ethereum': 'processed_data/ethereum/8bits.bin',
-    'generated': 'processed_data/generated/8bits.bin',
+    #'sismology': 'processed_data/sismology/8bits.bin',
+    #'ethereum': 'processed_data/ethereum/8bits.bin',
+    #'generated': 'processed_data/generated/8bits.bin',
 }
 
 parser = argparse.ArgumentParser()
